@@ -1,0 +1,25 @@
+{
+	"Player": {
+		"parent": "",
+		"methods": [
+			{ "name": "bool move", "paramters": ["int width", " int height", " enum dir"] },
+			{ "name": "bool damage", "paramters": [""] },
+			{ "name": "bool heal", "paramters": [""] },
+			{ "name": "int find_relict", "paramters": [""] },
+			{ "name": "int get_x", "paramters": [""] },
+			{ "name": "int get_y", "paramters": [""] },
+			{ "name": "int get_lives", "paramters": [""] }
+		],
+		"attributes": ["int relicts", "int lives", "Cords cords"]
+	},
+	"Field": {
+		"parent": "",
+		"methods": [
+			{ "name": "int get_width", "paramters": [""] },
+			{ "name": "int get_height", "paramters": [""] },
+			{ "name": "int get_relicts", "paramters": [""] }
+		],
+		"attributes": ["int relicts", "int width", "int height"]
+	},
+	"relations": { "Player": "Field" }
+} 
