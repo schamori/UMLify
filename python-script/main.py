@@ -18,6 +18,8 @@ def get_variable_content(variable):
         return f"{variable[0]} {variable[2]}", variable[3], variable[4]
     elif variable[1]:
         return f"{variable[1]} {variable[2]}", variable[3], variable[4]
+    elif len(variable) == 6:
+        return variable[2], variable[3], variable[4], variable[5]
     else:
         return variable[2], variable[3], variable[4]
 
@@ -55,13 +57,23 @@ def content2dict(content, class_data):
                     data_type, pointer, name = get_variable_content(attribute_match)
                     class_data["classes"][class_name]["attributes"].append(f"{symbol}{data_type} : {pointer}{name}")
 
-                #Todo
-                # ---------------- Methods ---------------------- #
-                # ---------------- Relations ---------------------- #
+                # -------- Methods ----------------#
+                method_regex = fr"{variable}\s*\((.*?)\);"
+                method_matches = re.findall(method_regex, inner_access)
+                class_data["classes"][class_name]["methods"] = list()
+                for method_match in method_matches:
+                    method = dict()
+                    data_type, pointer, name, params = get_variable_content(method_match)
+                    method["name"] = f"{symbol} {data_type}{pointer} {name}"
+                    white_space = r',\s+'
+                    params = re.sub(white_space, ',', params)
+                    method["paramters"] = params.split(",")
+                    class_data["classes"][class_name]["methods"].append(method)
+                # ---------------- Relations ------------------ #
     return class_data
 
 
-directory = 'uploads'
+directory = 'Headers'
 h_pattern = r'.*\.h$'
 class_data = dict()
 class_data["classes"] = dict()
