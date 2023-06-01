@@ -16,11 +16,12 @@
 
 </head>
 <body>
+<div class=img-heading>
   <?php include 'top_navbar.php'; ?>
   <h1 class="text-white">Ihre gespeicherten UML Diagramme</h1>
     </div>
-    <div class="table table-responsive">
-        <table class="table table-sm">
+    <div class="container">
+    <table class="table table-sm">
             <thead class="thead-dark">
                 <tr>
                     <th>Titel</th>

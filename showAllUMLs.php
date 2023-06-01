@@ -15,8 +15,8 @@
         include 'is_admin.php';
         ?>
 
-        <h1 class="text-white">Alle User</h1>
-    </div>
+        <h1 class="text-white">Alle User und ihre UMLs</h1>
+    
 
     <div class="container">
         <form method="GET" action="">
