@@ -30,9 +30,10 @@
             <tbody class="table-striped table-hover">
                 <?php
                 require("dbaccess.php");
-                $sql = "SELECT * FROM diagrams";
+                $sql = "SELECT * FROM diagrams WHERE USERNAME = ?";
                 $stmt = mysqli_stmt_init($mysqli);
                 mysqli_stmt_prepare($stmt, $sql);
+                mysqli_stmt_bind_param($stmt, "s", $_SESSION["username"]);
                 mysqli_stmt_execute($stmt);
                 $results = mysqli_stmt_get_result($stmt);
                 while ($row = mysqli_fetch_assoc($results)) {

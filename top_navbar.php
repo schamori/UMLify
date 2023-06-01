@@ -1,6 +1,7 @@
 <?php 
 session_start();
 $logged_in = isset($_SESSION["id"]);
+$isAdmin = (@$_SESSION["username"] == 'admin');
 ?>
 <nav class="navbar navbar-expand-md navbar-light bg-light">
     <a class="navbar-brand" href="index.php">Logo</a>
@@ -15,7 +16,15 @@ $logged_in = isset($_SESSION["id"]);
         </ul>
         <ul class="navbar-nav ml-auto">
         <?php 
-          if ($logged_in){?>
+          if ($logged_in){
+            if($isAdmin){
+                ?>
+                <li class="nav-item">
+                <a class="nav-link" href="showAllUMLs.php">Alle UMLs</a>
+            </li>
+            <?php
+            }
+            ?>
             <li class="nav-item">
                 <a class="nav-link" href="history.php">Ihr Verlauf: <?php echo $_SESSION["username"]?></a>
             </li>
