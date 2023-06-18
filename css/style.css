@@ -45,11 +45,13 @@ body {
 .figure {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  background-color: lightblue;
+  background-color: transparent;
   position: absolute;
   bottom: 10px;
   left: 10px;
+  background-image: url('pics/cat.png');
+  background-size: cover;
+  border-radius: 50%;
 }
 
 .speech-bubble {
@@ -81,6 +83,11 @@ h1 {
 }
 
 h2 {
+  color:rgb(0, 0, 0);
+  text-shadow: 1px 1px 2px rgb(255, 255, 255);
+}
+
+h4 {
   color:rgb(0, 0, 0);
   text-shadow: 1px 1px 2px rgb(255, 255, 255);
 }

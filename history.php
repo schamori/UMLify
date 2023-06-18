@@ -17,7 +17,9 @@
 </head>
 <body>
 <div class=img-heading>
-  <?php include 'top_navbar.php'; ?>
+  <?php include 'top_navbar.php';
+    include 'is_user.php';
+  ?>
   <h1 class="text-white">Ihre gespeicherten UML Diagramme</h1>
     </div>
     <div class="container">

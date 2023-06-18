@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  //drawUML(); //kann man entkommentieren für Tests
   $('#upload-form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData();
@@ -19,15 +18,17 @@ $(document).ready(function() {
         processData: false,
         success: function(response) {
           console.log(response);
-          getUML();
+          getUML(response);
         }
       });
     });
   });
   
-  function getUML() {
+  function getUML(uploadDir) {
     $.ajax({
       url: 'callpythonscript.php',
+      type: 'POST',
+      data: { upload_dir: uploadDir },
       success: function(response) {
         window.location.href = 'showUML.php';
       }

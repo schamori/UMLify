@@ -12,6 +12,7 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="css/mike.css">
 </head>
 
 <body>
@@ -23,10 +24,10 @@
         <div class="text-center"><h6>Free, Easy, No Limits</h6></div><br>
         <form id="upload-form" enctype="multipart/form-data">
   <div class="form-group">
-    <label for="file">Header-Datei auswählen:</label>
+    <label for="fileInput">Header-Datei auswählen:</label>
     <div class="custom-file">
       <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input">
-      <label class="custom-file-label" for="file">Choose file</label>
+      <label class="custom-file-label" for="fileInput">Choose file</label>
     </div>
   </div>
   <button type="submit" id="uploadFilesButton" class="btn btn-secondary btn-block btn-black" disabled>Hochladen</button>
@@ -65,9 +66,29 @@
     })
   </script>
   <div class="slider-thumb"></div>
-  <div class="figure">
-  <div class="speech-bubble">
-    Need help? click<button>here</button>
+  <div class="container">
+  <div class="horn"> </div>
+  <div class="horn right"> </div>
+  <div class="head"> </div>
+ 
+  <div class="face">
+    <div class="eye">
+      <div class="iris"> </div>
+    </div>
+    <div class="mouth"> </div>
+  </div>
+  <div class="hand"></div>
+  <div class="hand right"></div>
+  <div class="leg">
+    <div class="nail"></div>
+    <div class="nail one"></div>
+    <div class="nail two"></div>
+  </div>
+
+  <div class="leg two">
+    <div class="nail"></div>
+    <div class="nail one"></div>
+    <div class="nail two"></div>
   </div>
 </div>
 <script src="script.js"></script>
