@@ -1,8 +1,6 @@
 import os
 import re
 import json
-import sys
-import shutil
 
 def remove_unnecessary_content(content):
     single_line_comment_pattern = r'//.*$'
@@ -30,8 +28,11 @@ def content2dict(content, class_data):
     content = remove_unnecessary_content(content)
     class_regex = r"class\s+(\w+)\s*?(?:\:\s*\s*(?:public|private|protected)\s+(\w+)\s*,?)*\s*(\{[^{}]*\});?"
     classes = re.findall(class_regex, content)
-    print(classes)
     for class_match in classes:
+        # Check if the class is just there to tell the programm this class exits
+        inner = class_match[2]
+        if inner == "{}":
+            continue
         # ------------- Class Names ---------------- #
         class_name = class_match[0]
         class_data["classes"][class_name] = dict()
@@ -40,11 +41,11 @@ def content2dict(content, class_data):
         class_data["classes"][class_name]["parent"] = class_match[1]
 
         # -------------- Inner Class Part -------------- #
-        inner = class_match[2]
         variable = r"(?:const\s+|(enum)\s+|(struct)\s+)?(?:\w+::)?(\w+)\s+((?:\*|&)+\s*)*(\w+)\s*(?:\[(?:\s*\d+\s*)?\])?\s*"
 
         # These regex expressions describe the whole part after e.g private: until } or protected: or public:
-        access_modifiers = [(r"private:(.*?)(?:protected:|public:|\})", "-"),
+        access_modifiers = [(r"(.*?)(?:protected:|public:|private:|\})", "-"),
+            (r"private:(.*?)(?:protected:|public:|\})", "-"),
                     (r"public:(.*?)(?:private:|protected:|\})", "+"),
                     (r"protected:(.*?)(?:private:|public:|\})", "#")]
         class_data["classes"][class_name]["attributes"] = list()
@@ -63,7 +64,6 @@ def content2dict(content, class_data):
                 # -------- Methods ----------------#
                 method_regex = fr"{variable}\s*\((.*?)\);"
                 method_matches = re.findall(method_regex, inner_access)
-                class_data["classes"][class_name]["methods"] = list()
                 for method_match in method_matches:
                     data_type, pointer, name, parameters = get_variable_content(method_match)
                     parameters = re.findall(variable,parameters)
@@ -78,26 +78,23 @@ def content2dict(content, class_data):
                             class_data["relations"].add((class_name, data_type))
                         method["parameters"].append(f"{data_type} : {pointer}{name}")
                     class_data["classes"][class_name]["methods"].append(method)
+
+                # ---------------- Relations ------------------ #
     return class_data
 
-#temp folder for uploads
-if len(sys.argv) == 2:
-    folder_name = sys.argv[1]
-else:
-    print("Bitte geben Sie einen Ordnernamen als Parameter an.")
 
+directory = 'Headers'
 h_pattern = r'.*\.h$'
 class_data = dict()
 class_data["relations"] = set()
 class_data["classes"] = dict()
-for root, dirs, files in os.walk('uploads/' + folder_name):
+for root, dirs, files in os.walk(directory):
     for file in files:
         if re.match(h_pattern, file):
             with open(os.path.join(root, file)) as f:
                 content = f.read()
             class_data = content2dict(content, class_data)
 
-print(list(class_data["classes"].keys()))
 class_data["relations"] = list(class_data["relations"])
 class_data["relations"] = [(knows, is_known) for knows, is_known in class_data["relations"]
                             if is_known in class_data["classes"].keys()]
