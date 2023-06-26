@@ -40,6 +40,7 @@ function drawUML() {
 					for (var i = 0; i < classData.methods.length; i++) {
 						var method = classData.methods[i];
 						var methodName = method.name;
+						var parameters = method.parameters;
 						var methodType = methodName.charAt(0);
 						var cssClass = "";
 						if (methodType === "+") {
@@ -49,7 +50,7 @@ function drawUML() {
 						} else if (methodType === "-") {
 							cssClass = "private-method";
 						}
-						html += '<li class="list-group-item ' + cssClass + '">' + methodName + "</li>";
+						html += '<li class="list-group-item ' + cssClass + '">' + methodName + "(" + parameters + ")" + "</li>";
 					}
 					html += "</ul>";
 				}
@@ -79,7 +80,7 @@ function deleteFiles() {
 
 function downloadUML() {
 	$("#pic").click(function () {
-		htmlToImage.toJpeg($("#uml")[0], { quality: 0.95 }).then(function (dataUrl) {
+		htmlToImage.toJpeg($("#uml"), { quality: 0.95 }).then(function (dataUrl) {
 			var link = document.createElement("a");
 			link.download = "my-image-name.jpeg";
 			link.href = dataUrl;
@@ -105,6 +106,7 @@ function lines(classes) {
 				let start = "#" + className;
 				let end = "#" + classes[className].parent;
 				// console.log(start, end);
+				$("#uml").append(line);
 				$(start + ", " + end).draggable({
 					drag: function () {
 						line.position();
