@@ -8,16 +8,27 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Montserrat:400,700" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <!--<link rel="stylesheet" href="css/mike.css">-->
   <style>
     .image-container {
-      position: relative;
-      bottom: -35%;
+      position: absolute;
+      bottom: 2%;
       left: 1%;
       padding: 10px;
       width: 100%;
       max-width: 200px;
       text-align: left;
+    }
+
+    @media only screen and (max-width: 1900px) {
+      .image-container {
+        position: relative;
+        bottom: -30%;
+        left: 1%;
+        padding: 10px;
+        width: 100%;
+        max-width: 200px;
+        text-align: left;
+      }
     }
 
     .image-container img {
