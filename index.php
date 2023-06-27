@@ -8,16 +8,27 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Montserrat:400,700" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <!--<link rel="stylesheet" href="css/mike.css">-->
   <style>
     .image-container {
-      position: relative;
-      bottom: -35%;
+      position: absolute;
+      bottom: 2%;
       left: 1%;
       padding: 10px;
       width: 100%;
       max-width: 200px;
       text-align: left;
+    }
+
+    @media only screen and (max-width: 1900px) {
+      .image-container {
+        position: relative;
+        bottom: -30%;
+        left: 1%;
+        padding: 10px;
+        width: 100%;
+        max-width: 200px;
+        text-align: left;
+      }
     }
 
     .image-container img {
@@ -61,11 +72,12 @@
           <div class="form-group">
             <label for="file">Header-Datei auswählen:</label>
             <div class="custom-file">
-              <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input">
+              <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input" accept=".h">
               <label class="custom-file-label" for="file">Choose file</label>
             </div>
           </div>
-          <button type="submit" id="uploadFilesButton" class="btn btn-secondary btn-block btn-black" disabled>Hochladen</button>
+          <button type="submit" id="uploadFilesButton" class="btn btn-secondary btn-block btn-black"
+            disabled>Hochladen</button>
         </form>
       </div>
     </div>
@@ -93,12 +105,12 @@
       </div>
     </div>
   </div>
-  
-    <div class="image-container">
-      <img src="pics/mike.png" alt="Mike" />
-      <div class="tooltip">Need help? Visit our <a href="faq.php">FAQ site!</a></div>
-    </div>
-  
+
+  <div class="image-container">
+    <img src="pics/mike.png" alt="Mike" />
+    <div class="tooltip">Need help? Visit our <a href="faq.php">FAQ site!</a></div>
+  </div>
+
   <div id="uml"></div>
   <div id="myDiagramDiv"></div>
   <script>
@@ -107,7 +119,7 @@
     });
   </script>
   <div class="slider-thumb"></div>
-  
+
   <script src="script.js"></script>
 </body>
 

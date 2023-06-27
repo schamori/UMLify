@@ -65,9 +65,8 @@ def content2dict(content, class_data):
                     class_data["classes"][class_name]["attributes"].append(f"{symbol}{data_type} : {pointer}{name}")
 
                 # -------- Methods ----------------#
-                method_regex = fr"{variable}\s*\((.*?)\);"
+                method_regex = fr"{variable}\s*\((.*?)(?:\);|\)\s*=\s*0;|\s*override\s*;)"
                 method_matches = re.findall(method_regex, inner_access)
-                #class_data["classes"][class_name]["methods"] = list()
                 for method_match in method_matches:
                     data_type, pointer, name, parameters = get_variable_content(method_match)
                     parameters = re.findall(variable,parameters)
@@ -83,6 +82,7 @@ def content2dict(content, class_data):
                         method["parameters"].append(f"{data_type} : {pointer}{name}")
                     class_data["classes"][class_name]["methods"].append(method)
     return class_data
+
 
 #temp folder for uploads
 if len(sys.argv) == 2:
