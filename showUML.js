@@ -1,9 +1,11 @@
+
 $(document).ready(function () {
+
 	getSessionID();
 	downloadUML();
 });
 
-function getSessionID(){
+function getSessionID() {
 	$.ajax({
 		url: "getSessionID.php",
 		success: function (data) {
@@ -14,7 +16,7 @@ function getSessionID(){
 
 function drawUML(sessionID) {
 	$.ajax({
-		url: "uploads/"+sessionID+"/result.json",
+		url: "uploads/" + sessionID + "/result.json",
 		dataType: "json",
 		success: function (data) {
 			var classes = data.classes;
@@ -77,24 +79,62 @@ function drawUML(sessionID) {
 }
 
 function downloadUML() {
-	$('#pic').click(function() {
-        htmlToImage.toJpeg($('#uml')[0], { quality: 0.95 })
-            .then(function (dataUrl) {
-                var link = document.createElement('a');
-                link.download = 'my-image-name.jpeg';
-                link.href = dataUrl;
-                link.click();
-            });
-    });
+
+	$('#pic').click(function () {
+		function download(canvas, filename) {
+			const data = canvas.toDataURL("image/png;base64");
+			donwloadLink = document.querySelector("#pic");
+			donwloadLink.download = filename;
+			donwloadLink.href = data;
+		}
+		download(svgToCanvas($("body"), "hopa"));
+	})
 }
 
+function svgToCanvas(targetElem) {
+	var nodesToRecover = [];
+	var nodesToRemove = [];
+
+	var svgElem = targetElem.find('svg');
+
+	svgElem.each(function (index, node) {
+		var parentNode = node.parentNode;
+		var svg = parentNode.innerHTML;
+
+		var canvas = document.createElement('canvas');
+
+		canvg(canvas, svg);
+
+		nodesToRecover.push({
+			parent: parentNode,
+			child: node
+		});
+		parentNode.removeChild(node);
+
+		nodesToRemove.push({
+			parent: parentNode,
+			child: canvas
+		});
+
+		parentNode.appendChild(canvas);
+	});
+
+	html2canvas(targetElem, {
+		onrendered: function (canvas) {
+			var ctx = canvas.getContext('2d');
+			ctx.webkitImageSmoothingEnabled = false;
+			ctx.mozImageSmoothingEnabled = false;
+			ctx.imageSmoothingEnabled = false;
+		}
+	});
+}
 function lines(classes) {
 	$(function () {
 		for (var className in classes) {
 			if (classes[className].parent.length > 0) {
 				// console.log(classes[className].parent);
 				let line = new LeaderLine(document.getElementById(className), document.getElementById(classes[className].parent), { path: "grid", color: "black" });
-				
+
 				let start = "#" + className;
 				let end = "#" + classes[className].parent;
 				$("#uml").append(line);
