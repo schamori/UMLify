@@ -72,7 +72,7 @@
           <div class="form-group">
             <label for="file">Header-Datei auswählen:</label>
             <div class="custom-file">
-              <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input">
+              <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input" accept=".h">
               <label class="custom-file-label" for="file">Choose file</label>
             </div>
           </div>
