@@ -1,12 +1,20 @@
 $(document).ready(function () {
-	drawUML();
+	getSessionID();
 	downloadUML();
 });
 
-function drawUML() {
-	console.log("ZEICHNEN");
+function getSessionID(){
 	$.ajax({
-		url: "result.json",
+		url: "getSessionID.php",
+		success: function (data) {
+			drawUML(data);
+		}
+	})
+}
+
+function drawUML(sessionID) {
+	$.ajax({
+		url: "uploads/"+sessionID+"/result.json",
 		dataType: "json",
 		success: function (data) {
 			var classes = data.classes;
@@ -40,6 +48,7 @@ function drawUML() {
 					for (var i = 0; i < classData.methods.length; i++) {
 						var method = classData.methods[i];
 						var methodName = method.name;
+						var parameters = method.parameters;
 						var methodType = methodName.charAt(0);
 						var cssClass = "";
 						if (methodType === "+") {
@@ -49,7 +58,7 @@ function drawUML() {
 						} else if (methodType === "-") {
 							cssClass = "private-method";
 						}
-						html += '<li class="list-group-item ' + cssClass + '">' + methodName + "</li>";
+						html += '<li class="list-group-item ' + cssClass + '">' + methodName + "(" + parameters + ")" + "</li>";
 					}
 					html += "</ul>";
 				}
@@ -65,45 +74,30 @@ function drawUML() {
 			lines(classes);
 		},
 	});
-	deleteFiles();
-}
-
-function deleteFiles() {
-	$.ajax({
-		url: "deleteFilesFromServer.php",
-		success: function (response) {
-			console.log("Gelöscht");
-		},
-	});
 }
 
 function downloadUML() {
-	$("#pic").click(function () {
-		htmlToImage.toJpeg($("#uml")[0], { quality: 0.95 }).then(function (dataUrl) {
-			var link = document.createElement("a");
-			link.download = "my-image-name.jpeg";
-			link.href = dataUrl;
-			link.click();
-		});
-	});
+	$('#pic').click(function() {
+        htmlToImage.toJpeg($('#uml')[0], { quality: 0.95 })
+            .then(function (dataUrl) {
+                var link = document.createElement('a');
+                link.download = 'my-image-name.jpeg';
+                link.href = dataUrl;
+                link.click();
+            });
+    });
 }
 
 function lines(classes) {
-	/*
-	var startCard = $("#card1");
-	var endCard = $("#card2");
-
-	var line = new LeaderLine(startCard, endCard, {
-		path: "grid",
-	});
-	*/
 	$(function () {
 		for (var className in classes) {
 			if (classes[className].parent.length > 0) {
 				// console.log(classes[className].parent);
 				let line = new LeaderLine(document.getElementById(className), document.getElementById(classes[className].parent), { path: "grid", color: "black" });
+				
 				let start = "#" + className;
 				let end = "#" + classes[className].parent;
+				$("#uml").append(line);
 				// console.log(start, end);
 				$(start + ", " + end).draggable({
 					drag: function () {
@@ -112,11 +106,5 @@ function lines(classes) {
 				});
 			}
 		}
-		// let line = new LeaderLine(document.getElementById("Enemy"), document.getElementById("Field"), { path: "grid", color: "black" });
-		// $("#Enemy, #Field").draggable({
-		// 	drag: function () {
-		// 		line.position();
-		// 	},
-		// });
 	});
 }

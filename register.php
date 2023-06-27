@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <title>Registrierung</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/register.css">
+    <script src="animation.js"></script>
 </head>
 <body>
 <?php
     include 'top_navbar.php';
     include 'functions.php';
     ?>
-    <div class="container">
+    <div class="header">
         <div class="row justify-content-center align-items-center">
             <div class="col-md-6 my-5">
-                <div class="text-center">
-                    <img src="pics/register.jpg" class="img-fluid mb-3" style="max-width: 250px; max-height: 220px;">
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Registrierung</h4>
+                    <h1 class="title text-center">Registrierung</h4>
                         <?php
                         if (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST') {
                             $error = false;
@@ -26,56 +23,59 @@
                             $email = $_POST['email'];
                             $password1 = $_POST['password1'];
                             $password2 = $_POST['password2'];
-                            if(check_empty() !== false){
-                                echo "<p style='color: red'>Bitte füllen Sie alle Felder aus!</p>";
+                            if(check_empty() == true){
+                                echo "<p style='color: yellow; font-size: 20px>Bitte füllen Sie alle Felder aus!</p>";
                                 $error = true;
                             }
                           }
                         ?>
-                        <form method="POST" action="register.php">
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
-                            </div>
-
-                            <?php
+                    <form method="POST" action="register.php">
+                        
+                        <input id="input-1" name="username" type="text" placeholder="john" required />
+                        <label for="input-1">
+                            <span class="label-text">Username</span>
+                            <span class="nav-dot">Username</span>
+                            <div class="signup-button-trigger">Sign Up</div>
+                        </label>
+                        <?php
                             if(isset($username)){
                                 if(UserReg($username) !== false){
-                                    echo '<p style="color: red;"> Username schon vergeben! </p>';
+                                    echo '<p style="color: yellow; font-size: 20px"> Username schon vergeben! </p>';
                                     $error = true;
                                 }else if(invalidUsername($username) !== false){
-                                    echo '<p style="color: red;">Sonderzeichen sind beim Usernamen nicht erlaubt! </p>';
+                                    echo '<p style="color: yellow; font-size: 20px">Sonderzeichen sind beim Usernamen nicht erlaubt! </p>';
                                     $error = true;
                                 }
                             }
                             ?>
-
-                            <div class="form-group">
-                                <label for="email">E-Mail</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <?php
+                        <input id="input-2" type="email" name="email" placeholder="email@address.com" required />
+                        <label for="input-2">
+                            <span class="label-text">Email</span>
+                            <span class="nav-dot">Email</span>
+                        </label>
+                        <?php
                             if(isset($email)){
                                 if(EmailReg($email) !== false){
-                                    echo '<p style="color: red;"> Email schon vergeben! </p>';
+                                    echo '<p style="color: yellow; font-size: 20px"> Email schon vergeben! </p>';
                                     $error = true;
                                 }else if(invalidEmail($email) !== false){
-                                    echo '<p style="color: red;"> Bitte eine gültige E-Mail-Adresse eingeben! </p>';
+                                    echo '<p style="color: yellow; font-size: 20px"> Bitte eine gültige E-Mail-Adresse eingeben! </p>';
                                     $error = true;
                                 }
                             }
                             ?>
-
-                            <div class="form-group">
-                                <label for="password1">Password</label>
-                                <input type="password" class="form-control" id="password-reg" name="password1" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password2">Password again</label>
-                                <input type="password" class="form-control" id="password-reg" name="password2" required>
-                            </div>
-                            <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $password1 != $password2) { ?>
-                                <p style="color: red;"> Bitte geben Sie zweimal dasselbe Passwort ein. </p>
+                        <input id="input-3" type="password" name="password1" placeholder="&#9679;&#9679;EnterYourPassword&#9679;&#9679;" required />
+                        <label for="input-3">
+                            <span class="label-text">Password</span>
+                            <span class="nav-dot">Password</span>
+                        </label>
+                        <input id="input-4" type="password" name="password2" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" required />
+                        <label for="input-4">
+                            <span class="label-text">Confirm Password</span>
+                            <span class="nav-dot">Confirm password</span>
+                        </label>
+                        <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $password1 != $password2) { ?>
+                                <p style="color: yellow; font-size: 20px"> Bitte geben Sie zweimal dasselbe Passwort ein. </p>
                             <?php
                                 $error = true;
                             }
@@ -92,22 +92,22 @@
                                     mysqli_stmt_bind_param($stmt, "sss", $username, $email, $hash);
                                     mysqli_stmt_execute($stmt);
                                     ?>
-                                    <p style="color: green;"> Dein Account wurde erstellt! </p>
+                                    <p style="color: green; font-size: 20px"> Dein Account wurde erstellt! </p>
                                     <?php
+                                    header('Refresh: 1; URL = login.php');
                                     mysqli_stmt_close($stmt);
                                 } else {
                                     ?>
-                                    <p style="color: red;"> Registrierung fehlgeschlagen! </p>
+                                    <p style="color: yellow; font-size: 20px"> Registrierung fehlgeschlagen! </p>
                                     <?php
                                     }
                                 }
                             ?>
-                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                            <p class="small fw-bold mt-2 pt-1 mb-0">Schon einen Account? <a href="login.php" class="link-danger">Login</a></p>
-                        </form>
+                        <button type="submit" name="submit">Create Your Account</button>
+                        <p class="tip">Press Enter to submit</p>
+                        <div class="signup-button">Click here to start</div>
+                    </form>
                     </div>
-                </div>
-            </div>
         </div>
     </div>
 </body>

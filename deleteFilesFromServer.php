@@ -1,22 +1,15 @@
 <?php
-$dir_path = 'uploads/';
+$dir_path = 'uploads/' . $_SESSION["id"];
 
 if (is_dir($dir_path)) {
-    deleteSubdirectories($dir_path);
+    deleteDirectory($dir_path);
 }
 
-function deleteSubdirectories($dir) {
+function deleteDirectory($dir) {
     if (!is_dir($dir)) {
         return;
     }
 
-    $subdirectories = glob($dir . '/*', GLOB_ONLYDIR);
-    foreach ($subdirectories as $subdirectory) {
-        deleteDirectory($subdirectory);
-    }
-}
-
-function deleteDirectory($dir) {
     $files = array_diff(scandir($dir), array('.', '..'));
     foreach ($files as $file) {
         $file_path = $dir . '/' . $file;
@@ -26,7 +19,6 @@ function deleteDirectory($dir) {
             unlink($file_path);
         }
     }
-
     rmdir($dir);
 }
 ?>

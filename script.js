@@ -17,8 +17,19 @@ $(document).ready(function() {
         contentType: false,
         processData: false,
         success: function(response) {
-          console.log(response);
-          getUML(response);
+          if (response == "error") {
+            var errorMessage = $("<p>Der Upload darf nicht größer als 1MB sein!</p>").css({
+              "color": "red",
+              "font-weight": "bold",
+              "text-align": "center",
+              "font-size": "30px",
+              "text-shadow": "1px 1px 2px rgb(0, 0, 0)",
+              "margin-top": "2%"
+              });
+            $('#error-message').append(errorMessage);
+          }else{
+            getUML(response);
+          }
         }
       });
     });
@@ -30,8 +41,20 @@ $(document).ready(function() {
       type: 'POST',
       data: { upload_dir: uploadDir },
       success: function(response) {
-        window.location.href = 'showUML.php';
-      }
+        if (response !== "error") {
+          window.location.href = 'showUML.php';
+        } else {
+          var errorMessage = $("<p>Es wurde kein .h File hochgeladen!</p>").css({
+            "color": "red",
+            "font-weight": "bold",
+            "text-align": "center",
+            "font-size": "30px",
+            "text-shadow": "1px 1px 2px rgb(0, 0, 0)",
+            "margin-top": "2%"
+            });
+          $('#error-message').append(errorMessage);
+        }
+      },
     });
   }
 

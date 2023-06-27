@@ -9,7 +9,10 @@
 
 <?php 
 session_start();
-$logged_in = isset($_SESSION["id"]);
+$logged_in = isset($_SESSION["username"]);
+if(!isset($_SESSION["id"])){
+    $_SESSION["id"] = bin2hex(random_bytes(8));
+}
 $isAdmin = (@$_SESSION["username"] == 'admin');
 ?>
 <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -28,6 +31,9 @@ $isAdmin = (@$_SESSION["username"] == 'admin');
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+                <a class="nav-link" href="faq.php">FAQ</a>
+            </li>
         <?php 
           if ($logged_in){
             if($isAdmin){
