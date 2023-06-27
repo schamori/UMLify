@@ -99,6 +99,7 @@ function lines(classes) {
 				let end = "#" + classes[className].parent;
 				$("#uml").append(line);
 				// console.log(start, end);
+				$("#uml").append(line);
 				$(start + ", " + end).draggable({
 					drag: function () {
 						line.position();
