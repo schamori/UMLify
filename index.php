@@ -61,11 +61,12 @@
           <div class="form-group">
             <label for="file">Header-Datei auswählen:</label>
             <div class="custom-file">
-              <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input">
+              <input type="file" name="file[]" id="fileInput" multiple class="custom-file-input" accept=".h">
               <label class="custom-file-label" for="file">Choose file</label>
             </div>
           </div>
-          <button type="submit" id="uploadFilesButton" class="btn btn-secondary btn-block btn-black" disabled>Hochladen</button>
+          <button type="submit" id="uploadFilesButton" class="btn btn-secondary btn-block btn-black"
+            disabled>Hochladen</button>
         </form>
       </div>
     </div>
@@ -93,12 +94,12 @@
       </div>
     </div>
   </div>
-  
-    <div class="image-container">
-      <img src="pics/mike.png" alt="Mike" />
-      <div class="tooltip">Need help? Visit our <a href="faq.php">FAQ site!</a></div>
-    </div>
-  
+
+  <div class="image-container">
+    <img src="pics/mike.png" alt="Mike" />
+    <div class="tooltip">Need help? Visit our <a href="faq.php">FAQ site!</a></div>
+  </div>
+
   <div id="uml"></div>
   <div id="myDiagramDiv"></div>
   <script>
@@ -107,7 +108,7 @@
     });
   </script>
   <div class="slider-thumb"></div>
-  
+
   <script src="script.js"></script>
 </body>
 
