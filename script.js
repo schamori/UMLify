@@ -17,6 +17,7 @@ $(document).ready(function() {
         contentType: false,
         processData: false,
         success: function(response) {
+          console.log(response);
           if (response == "error") {
             var errorMessage = $("<p>Der Upload darf nicht größer als 1MB sein!</p>").css({
               "color": "red",
@@ -26,7 +27,7 @@ $(document).ready(function() {
               "text-shadow": "1px 1px 2px rgb(0, 0, 0)",
               "margin-top": "2%"
               });
-            $('#error-message').append(errorMessage);
+            $('#error-message').html(errorMessage);
           }else{
             getUML(response);
           }
@@ -52,7 +53,7 @@ $(document).ready(function() {
             "text-shadow": "1px 1px 2px rgb(0, 0, 0)",
             "margin-top": "2%"
             });
-          $('#error-message').append(errorMessage);
+          $('#error-message').html(errorMessage);
         }
       },
     });
