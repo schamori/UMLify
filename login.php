@@ -25,42 +25,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="input-1">
                         <span class="label-text">Username</span>
                         <span class="nav-dot">Username</span>
-                        <div class="signup-button-trigger">Log In</div>
+                        <div class="login-button-trigger">Log In</div>
                     </label>
-                    
-                    <input id="input-2" type="password" name="password" placeholder="&#9679;&#9679;DontShareYourPassword&#9679;&#9679;" required />
+                    <input id="input-2" type="password" name="password" placeholder="&#9679;&#9679;EnterYourPassword&#9679;&#9679;" required />
                     <label for="input-2">
                         <span class="label-text">Password</span>
                         <span class="nav-dot">Password</span>
                     </label>
-                            <?php
-
-                            if (isset($_POST["submit"])) {
-                                require("dbaccess.php");
-                                $sql = "SELECT USERNAME, PASSWORD, ID FROM accounts WHERE USERNAME = ?";
-                                $stmt = mysqli_stmt_init($mysqli);
-                                mysqli_stmt_prepare($stmt, $sql);
-                                mysqli_stmt_bind_param($stmt, "s", $username);
-                                mysqli_stmt_execute($stmt);
-                                $results = mysqli_stmt_get_result($stmt);
-                                if (!($row = mysqli_fetch_assoc($results))) {
-                                    ?>
-                                    <p style="color: red;"> Username existiert nicht!</p>
-                                    <?php
-                                } else if (!password_verify($password, $row["PASSWORD"])) {
-                                    ?>
-                                    <p style="color: red;"> Falsches Passwort! </p>
-                                <?php } else {
-                                    $_SESSION["username"] = $row["USERNAME"];
-                                    $_SESSION["id"] = $row["ID"];
-                                    echo "<h2 style='color: green'>Login erfolgreich</h2>";
-                                    header('Refresh: 1; URL = index.php');
-                                }
-                            }
+                    <?php
+                    if (isset($_POST["submit"])) {
+                        require("dbaccess.php");
+                        $sql = "SELECT USERNAME, PASSWORD, ID FROM accounts WHERE USERNAME = ?";
+                        $stmt = mysqli_stmt_init($mysqli);
+                        mysqli_stmt_prepare($stmt, $sql);
+                        mysqli_stmt_bind_param($stmt, "s", $username);
+                        mysqli_stmt_execute($stmt);
+                        $results = mysqli_stmt_get_result($stmt);
+                        if (!($row = mysqli_fetch_assoc($results))) {
                             ?>
-                            <button type="submit" name="submit">Login</button>
+                            <p style="color: yellow; font-size: 20px"> Username existiert nicht!</p>
+                            <?php
+                        } else if (!password_verify($password, $row["PASSWORD"])) {
+                            ?>
+                            <p style="color: yellow; font-size: 20px"> Falsches Passwort! </p>
+                        <?php } else {
+                            $_SESSION["username"] = $row["USERNAME"];
+                            $_SESSION["id"] = $row["ID"];
+                            echo "<h2 style='color: green; font-size: 20px'>Login erfolgreich</h2>";
+                            header('Refresh: 1; URL = index.php');
+                        }
+                    }
+                    ?>
+                    <button type="submit" name="submit">Login</button>
                     <p class="tip">Press Enter to log in</p>
-                    <div class="signup-button">Click here to start</div>
+                    <div class="login-button">Click here to start</div>
                 </form>
             </div>
         </div>
