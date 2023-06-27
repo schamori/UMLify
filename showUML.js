@@ -66,7 +66,6 @@ function drawUML(sessionID) {
 				html += "</div>";
 			}
 			html += "</div></div>";
-			console.log(classes);
 			$("#uml").html(html);
 			$(".card").draggable({
 				containment: "#myDiv",
@@ -92,13 +91,10 @@ function lines(classes) {
 	$(function () {
 		for (var className in classes) {
 			if (classes[className].parent.length > 0) {
-				// console.log(classes[className].parent);
 				let line = new LeaderLine(document.getElementById(className), document.getElementById(classes[className].parent), { path: "grid", color: "black" });
-				
 				let start = "#" + className;
 				let end = "#" + classes[className].parent;
-				$("#uml").append(line);
-				// console.log(start, end);
+				
 				$("#uml").append(line);
 				$(start + ", " + end).draggable({
 					drag: function () {
