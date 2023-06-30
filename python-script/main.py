@@ -48,6 +48,7 @@ def content2dict(content, class_data):
         # -------------- Inner Class Part -------------- #
         variable = r"(?:const\s+|(enum)\s+|(struct)\s+)?(?:\w+::)?(\w+|\w+<\w+(?:\*|&)*>)(?:\*|&)*\s+((?:\*|&)+\s*)*(\w+)\s*(?:\[(?:\s*\d+\s*)?\])?\s*"
 
+        inner_stdl_content = r"\w+<(\w+)(?:\*|&)*>"
         # These regex expressions describe the whole part after e.g private: until } or protected: or public:
         access_modifiers = [(r"(.*?)(?:protected:|public:|private:|\})", "-"),
                             (r"private:(.*?)(?:protected:|public:|\})", "-"),
@@ -65,8 +66,15 @@ def content2dict(content, class_data):
                 for attribute_match in attribute_matches:
                     data_type, pointer, name = get_variable_content(
                         attribute_match)
+                    inner_stdl_datatype = re.findall(inner_stdl_content, data_type)
+                    if inner_stdl_datatype:
+                        if not re.findall(data_types, data_type):
+                            class_data["relations"].add((class_name, inner_stdl_datatype[0]))
+                    elif not re.findall(data_types, data_type):
+                        class_data["relations"].add((class_name, data_type))
                     class_data["classes"][class_name]["attributes"].append(
                         f"{symbol}{data_type} : {pointer}{name}")
+
 
                 # -------- Methods ----------------#
                 method_regex = fr"{variable}\s*\((.*?)(?:\);|\)\s*=\s*0;|\s*override\s*;)"
@@ -76,16 +84,23 @@ def content2dict(content, class_data):
                         method_match)
                     parameters = re.findall(variable, parameters)
                     method = dict()
-                    if not re.findall(data_types, data_type):
+                    inner_stdl_datatype = re.findall(inner_stdl_content, data_type)
+                    if inner_stdl_datatype:
+                        if not re.findall(data_types, data_type):
+                            class_data["relations"].add((class_name, inner_stdl_datatype[0]))
+                    elif not re.findall(data_types, data_type):
                         class_data["relations"].add((class_name, data_type))
-                    method["name"] = f"{symbol}{data_type} : {pointer}{name}"
+                    method["name"] = f"{symbol}{name} : {pointer}{data_type}"
                     method["parameters"] = list()
                     for paramter in parameters:
                         data_type, pointer, name = get_variable_content(
                             paramter)
-                        if not re.findall(data_types, data_type):
-                            class_data["relations"].add(
-                                (class_name, data_type))
+                        inner_stdl_datatype = re.findall(inner_stdl_content, data_type)
+                        if inner_stdl_datatype:
+                            if not re.findall(data_types, data_type):
+                                class_data["relations"].add((class_name, inner_stdl_datatype[0]))
+                        elif not re.findall(data_types, data_type):
+                            class_data["relations"].add((class_name, data_type))
                         method["parameters"].append(
                             f"{data_type} : {pointer}{name}")
                     class_data["classes"][class_name]["methods"].append(method)
