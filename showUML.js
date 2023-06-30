@@ -12,6 +12,18 @@ function getSessionID(){
 	})
 }
 
+function htmlEntities(str) {
+    return str.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+}
+
+function escapeAngleBracketsAndColon(str) {
+    return str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/:/g, '&nbsp;:');
+}
+
 function drawUML(sessionID) {
 	$.ajax({
 		url: "uploads/"+sessionID+"/result.json",
@@ -21,7 +33,7 @@ function drawUML(sessionID) {
 			var html = '<div class="container"><div class="row">';
 			for (var className in classes) {
 				var classData = classes[className];
-				html += '<div class="col-2 m-4">';
+				html += '<div class="col-5 m-4">';
 				html += '<div id="' + className + '"class="card">';
 				html += '<div class="card-header fw-bold">' + className + "</div>";
 				if (classData.attributes.length > 0) {
@@ -38,7 +50,7 @@ function drawUML(sessionID) {
 						} else if (attributeType === "-") {
 							cssClass = "private-attribute";
 						}
-						html += '<li class="list-group-item ' + cssClass + '">' + attribute + "</li>";
+						html += '<li class="list-group-item ' + cssClass + '">' + htmlEntities(attribute) + "</li>";
 					}
 					html += "</ul>";
 				}
@@ -58,7 +70,9 @@ function drawUML(sessionID) {
 						} else if (methodType === "-") {
 							cssClass = "private-method";
 						}
-						html += '<li class="list-group-item ' + cssClass + '">' + methodName + "(" + parameters + ")" + "</li>";
+						html += '<li class="list-group-item ' + cssClass + '">' + methodName + "(" + escapeAngleBracketsAndColon(String(parameters)) + ")" + "</li>";
+
+
 					}
 					html += "</ul>";
 				}
