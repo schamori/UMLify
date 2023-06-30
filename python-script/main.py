@@ -66,7 +66,7 @@ def content2dict(content, class_data):
                     data_type, pointer, name = get_variable_content(
                         attribute_match)
                     class_data["classes"][class_name]["attributes"].append(
-                        f"{symbol}{name} : {pointer}{data_type}")
+                        f"{symbol}{data_type} : {pointer}{name}")
 
                 # -------- Methods ----------------#
                 method_regex = fr"{variable}\s*\((.*?)(?:\);|\)\s*=\s*0;|\s*override\s*;)"
@@ -78,7 +78,7 @@ def content2dict(content, class_data):
                     method = dict()
                     if not re.findall(data_types, data_type):
                         class_data["relations"].add((class_name, data_type))
-                    method["name"] = f"{symbol}{name} : {pointer}{data_type}"
+                    method["name"] = f"{symbol}{data_type} : {pointer}{name}"
                     method["parameters"] = list()
                     for paramter in parameters:
                         data_type, pointer, name = get_variable_content(
